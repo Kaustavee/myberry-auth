@@ -7,6 +7,7 @@
     "jsr:@std/internal@^1.0.5": "1.0.5",
     "npm:@types/node@*": "22.5.4",
     "npm:mongoose@*": "8.8.1",
+    "npm:mongoose@^8.8.1": "8.8.1",
     "npm:winston@^3.17.0": "3.17.0",
     "npm:zod@^3.23.8": "3.23.8"
   },
@@ -286,6 +287,7 @@
     "dependencies": [
       "jsr:@hono/hono@^4.6.9",
       "jsr:@std/assert@1",
+      "npm:mongoose@^8.8.1",
       "npm:winston@^3.17.0",
       "npm:zod@^3.23.8"
     ]

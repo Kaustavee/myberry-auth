@@ -3,6 +3,7 @@ import { logger } from "@hono/hono/logger";
 // import { validator } from "jsr:@hono/hono/validator";
 // import mongoose, { Model, Schema } from "npm:mongoose";
 import healthRoute from "./routes/health.route.ts";
+import authRoute from "./routes/auth.route.ts";
 
 // const userSchema = new Schema({
 //   username: { type: String, required: true },
@@ -20,6 +21,7 @@ import healthRoute from "./routes/health.route.ts";
 const app = new Hono();
 app.use(logger());
 app.route("/health", healthRoute);
+app.route("/auth", authRoute);
 
 // app.get("/health", (c) => {
 //   try {
