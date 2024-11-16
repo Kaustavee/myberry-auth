@@ -1,21 +1,24 @@
 import mongoose from "npm:mongoose";
-import logger from "./logger.ts";
+import { ENVIRONMENT } from "./config.ts";
 
-export const dbConnect = async () => {
-  const MONGODB_URI = Deno.env.get("MONGODB_URI");
-  if (!MONGODB_URI || MONGODB_URI.trim().length == 0) {
+let connection: typeof mongoose | null = null;
+
+function getMongodbURL() {
+  const MONGODB_URL = Deno.env.get("MONGODB_URL");
+  if (!MONGODB_URL || MONGODB_URL.trim().length === 0) {
     throw new Error("MONGODB_URI is not defined");
   }
-  const client = await mongoose.connect(MONGODB_URI);
-  logger.info("Connected to MongoDB");
-  return client;
-};
-export const checkConnetion = async () => {
-  try {
-    await dbConnect();
-    return true;
-  } catch (error) {
-    logger.error("failed to connect to mongodb:", error);
-    return false;
+  return MONGODB_URL;
+}
+
+export const dbConnect = async () => {
+  if (ENVIRONMENT === "development") {
+    if (connection === null) {
+      connection = await mongoose.connect(getMongodbURL());
+    }
+
+    return connection;
   }
+
+  return await mongoose.connect(getMongodbURL());
 };

@@ -1,12 +1,23 @@
 import { Hono } from "@hono/hono";
-
-import { checkConnetion } from "../lib/db.ts";
+import { dbConnect } from "../lib/db.ts";
+import logger from "../lib/logger.ts";
 
 const healthRoute = new Hono();
+
 healthRoute.get("/", async (c) => {
   type Status = "OK" | "ERROR";
   const live: Status = "OK";
-  const ready: Status = (await checkConnetion()) ? "OK" : "ERROR";
+  let ready: Status;
+
+  try {
+    await dbConnect();
+    ready = "OK";
+  } catch (error) {
+    logger.error("error in connecting to mongodb", error);
+    ready = "ERROR";
+  }
+
   return c.json({ live, ready });
 });
+
 export default healthRoute;
